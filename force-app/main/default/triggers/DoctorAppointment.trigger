@@ -1,4 +1,4 @@
-trigger DoctorHaveAppointment on Appointment__c(before insert, before update) {
+trigger DoctorAppointment on Appointment__c(before insert, before update) {
     for (Appointment__c appointment : Trigger.new) {
         String message = 'The Doctor not able to have appoitment';
 
@@ -6,8 +6,8 @@ trigger DoctorHaveAppointment on Appointment__c(before insert, before update) {
         Integer duration = appointment.Duration_in_minutes__c.intValue();
         Integer endTime = startTime + duration;
 
-        Boolean isDoctorsAppointments = DoctorHaveAppointmentHelper.hasDoctorsAppointments(appointment, startTime, endTime);
-        Boolean isDoctorAvailable = DoctorHaveAppointmentHelper.hasDoctorAvailable(appointment, startTime, endTime);
+        Boolean isDoctorsAppointments = DoctorAppointmentHelper.hasDoctorsAppointments(appointment, startTime, endTime);
+        Boolean isDoctorAvailable = DoctorAppointmentHelper.hasDoctorAvailable(appointment, startTime, endTime);
 
         if (isDoctorsAppointments || isDoctorAvailable) {
             appointment.addError(message);
