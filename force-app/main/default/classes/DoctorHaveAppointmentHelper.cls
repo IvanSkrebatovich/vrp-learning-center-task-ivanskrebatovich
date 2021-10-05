@@ -1,9 +1,8 @@
 public class DoctorHaveAppointmentHelper {
 
     public static Boolean hasDoctorsAppointments(Appointment__c inputAppointment, Integer startTime, Integer endTime) {
-        Map<ID, Appointment__c> appointmentsMap = DoctorAppointmentsModel.getAppointments();
-        List<Appointment__c> appointments = appointmentsMap.values();
-        // TODO: return LIST not MAP
+        List<Appointment__c> appointments = DoctorAppointmentsModel.getAppointments();
+                // TODO: return LIST not MAP
         for (Appointment__c record : appointments) {
             if ((inputAppointment.Doctor__c == record.Doctor__c)) {
                 if (inputAppointment.Appointment_Date__c == record.Appointment_Date__c) {
@@ -23,8 +22,8 @@ public class DoctorHaveAppointmentHelper {
     }
 
     public static Boolean hasDoctorAvailable(Appointment__c inputAppointment, Integer startTime, Integer endTime) {
-        Map<ID, Doctor__c>  doctorsMap = DoctorAppointmentsModel.getDoctors();
-        List<Doctor__c>  doctors = doctorsMap.values();
+        List<Doctor__c>  doctors = DoctorAppointmentsModel.getDoctors();
+        
         // TODO: return LIST not MAP
         for (Doctor__c doctor : doctors) {
             Integer hoursStart = doctor.Working_Hours_Start__c.hour() * 60 + doctor.Working_Hours_Start__c.minute();
