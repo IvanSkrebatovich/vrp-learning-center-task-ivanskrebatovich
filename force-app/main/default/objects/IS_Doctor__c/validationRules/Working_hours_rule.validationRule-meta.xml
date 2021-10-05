@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Working_hours_rule</fullName>
+    <active>true</active>
+    <description>This rule prohibits creation of Doctor recording if working hours start greater than working hours end</description>
+    <errorConditionFormula>Working_Hours_Start__c  &gt;  Working_Hours_End__c</errorConditionFormula>
+    <errorMessage>Working Hours Start can&apos;t be greater than Working Hours End</errorMessage>
+</ValidationRule>
