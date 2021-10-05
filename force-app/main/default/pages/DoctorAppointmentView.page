@@ -1,4 +1,12 @@
 <apex:page controller="DoctorAppointmentController">
-    <apex:pageBlock title="Appointments Table">
-    </apex:pageBlock>
+    <apex:form>
+        <apex:pageBlock title="Appointments List" id="appointments">
+            <apex:pageBlockTable value="{! appointments }" var="a">
+                <apex:column value="{! a.Doctor__r.Name }"/>
+                <apex:column value="{! a.Patient__r.Name }"/>
+                <apex:column value="{! a.Appointment_Date__c }"/>
+                <apex:column value="{! a.Duration_in_minutes__c }"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
 </apex:page>
