@@ -1,0 +1,4 @@
+<apex:page controller="AppointmentsTableWithController">
+    <apex:pageBlock title="Appointments Table">
+    </apex:pageBlock>
+</apex:page>
