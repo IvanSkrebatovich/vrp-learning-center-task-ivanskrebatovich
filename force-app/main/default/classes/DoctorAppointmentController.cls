@@ -1,4 +1,4 @@
-public class DoctorAppointmentController {
+public without sharing class DoctorAppointmentController {
     // --------------------------------------------------
     // GETTER:
     public List<Appointment__c> getAppointments() {
@@ -22,5 +22,10 @@ public class DoctorAppointmentController {
     public static Boolean createAppointment() {
         Boolean isCreated = DoctorAppointmentsModel.createAppointment();
         return isCreated;
+    }
+
+    @RemoteAction()
+    public static String jopa() {
+        return 'Jopa';
     }
 }
