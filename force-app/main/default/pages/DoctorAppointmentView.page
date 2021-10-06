@@ -2,32 +2,33 @@
     <apex:form>
         <apex:pageBlock title="Appointments List" id="appointments">
             <!-- DoctorAppointmentController.appointments -->
-            <!-- <apex:selectList label="Select a doctor" size="1" value="{!}" onchange="();"  >		 
-                <apex:selectOptions value="{!}"/>
-            </apex:selectList>
+            <!-- <apex:selectList label="Select a doctor" size="1" value="{!doctors}" onchange="">		 
+                <apex:selectOptions value="{!doctors}"/>
+            </apex:selectList> -->
 
-            <apex:actionFunction name="SelectAppointments" action="{!}"  rerender="allBlock"/>             
-            <apex:commandButton value="Add New Doctor" action="{!}"/>  -->
+            <!-- <apex:actionFunction name="SelectAppointments" action="selectAppointment"  rerender="allBlock"/>              -->
+            <apex:commandButton value="Add New Doctor" action="AddNewDoctor"/>
 
-            <!-- <apex:outputField label="Working Start Hours " value="{!Doctor__r.Working_Hours_Start__c}"/>
-            <apex:outputField label="Working End Hours " value="{!Doctor__r.Working_Hours_End__c}"/>
+            <!-- <apex:outputField label="Working Start Hours " value="Working_Hours_Start"/>
+            <apex:outputField label="Working End Hours " value="Working_Hours_End"/> -->
 
-            <apex:selectList label="Select a patient" value="{!}" size="1">
-                 <apex:selectOptions value="{!}" />
-            </apex:selectList>  -->
-            <!-- <apex:commandButton value="Add New Patient" action="{!}" />
+            <!-- <apex:selectList label="Select a patient" value="0"size="1">
+                 <apex:selectOptions value="0"/>
+            </apex:selectList>   -->
+            <apex:commandButton value="Add New Patient" action="AddNewPatient" />
 
-            <apex:pageBlockSection>
+            <!-- <apex:pageBlockSection>
                 <apex:inputField label="Appointment date" value="{!}" required="false" />
             </apex:pageBlockSection>
 
             <apex:pageBlockSection>
                 <apex:inputField label="Duration in minutes" value="{!}" required="false" />
-            </apex:pageBlockSection>
+            </apex:pageBlockSection> -->
 
-            <apex:commandButton action="{!save}" value="Add New Appointment" reRender="allBlock" /> -->
-
-
+            <!-- <apex:commandButton action="{!save}" value="Add New Appointment" reRender="allBlock" /> --> 
+            <div>
+                <button onclick="createAppointment()">Add New Appointment</button>
+            </div>
             <apex:pageBlockTable value="{! appointments }" var="a">
                 <apex:column value="{! a.Doctor__r.Name }" />
                 <apex:column value="{! a.Patient__r.Name }" />
@@ -42,45 +43,15 @@
         </apex:pageBlock>
     </apex:form>
     <br/>
-    <apex:form>
-        <apex:pageBlock title="Patients" id="patients">
-            <apex:pageBlockTable value="{! patients }" var="p">
-                <apex:column value="{! p.Name }" />
-            </apex:pageBlockTable>
-        </apex:pageBlock>
-    </apex:form>
-    <br/>
-    <apex:form>
-        <apex:pageBlock title="Doctors" id="doctors">
-            <apex:pageBlockTable value="{! doctors }" var="d">
-                <apex:column value="{! d.Name }" />
-            </apex:pageBlockTable>
-        </apex:pageBlock>
-    </apex:form>
-
-    <!-- <hr/>
-    <div>
-        <button onclick="createAppointment()">Create Appointment</button>
-    </div> -->
-
-    <!-- <script>
-        // function createAppointment() {
-        //     Visualforce.remoting.Manager.invokeAction("{!RemoteAction.DoctorAppointmentController.jopa}", function (result, event) {
-        //         console.log('RESULT:', result);
-        //         console.log('EVENT:', event);
-        //     }, {escape: true});
-            
-            // function createAppointment() {
-            //     var target = "{$!RemoteAction.DoctorAppointmentController.jopa};
-            //     var options = {escape: true};
-            //     var callback = function(result,event) {
-            //         console.log('RESULT:', result);
-            //         console.log('EVENT:', event);
-            //     }
-            //     Visualforce.remoting.Manager.invokeAction(target, callback, options);
-            // }
-            
-        // }
-    </script> -->
-
+    <script>
+        function createAppointment() {
+            var target = "{!$RemoteAction.DoctorAppointmentController.jopa}";
+            var options = { escape: true};
+            var callback = function (result, event) {
+                console.log('RESULT:', result);
+                console.log('EVENT:', event);
+            }
+            Visualforce.remoting.Manager.invokeAction(target, callback, options);
+        }
+    </script> 
 </apex:page>
