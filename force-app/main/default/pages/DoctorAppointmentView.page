@@ -1,6 +1,7 @@
 <apex:page controller="DoctorAppointmentController">
     <apex:form>
         <apex:pageBlock title="Appointments List" id="appointments">
+            <!-- DoctorAppointmentController.appointments -->
             <apex:pageBlockTable value="{! appointments }" var="a">
                 <apex:column value="{! a.Doctor__r.Name }"/>
                 <apex:column value="{! a.Patient__r.Name }"/>
@@ -9,4 +10,40 @@
             </apex:pageBlockTable>
         </apex:pageBlock>
     </apex:form>
+    <br/>
+    <apex:form>
+        <apex:pageBlock title="Patients" id="patients">
+            <apex:pageBlockTable value="{! patients }" var="p">
+                <apex:column value="{! p.Name }"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+    <br/>
+    <apex:form>
+        <apex:pageBlock title="Doctors" id="doctors">
+            <apex:pageBlockTable value="{! doctors }" var="d">
+                <apex:column value="{! d.Name }"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+
+    <hr/>
+    <div>
+        <button onclick="createAppointment()">Create Appointment</button>
+    </div>
+
+    <script>
+        function createAppointment() {
+            console.log('CREATE SOME APPOINTMENT');
+            // var isCreated = DoctorAppointmentController.createAppointment();
+            // ..
+            // ..
+            // ..
+            // ..
+            // ..
+            // ..
+            // ..
+        }
+    </script>
+
 </apex:page>
