@@ -2,19 +2,50 @@
     <apex:form>
         <apex:pageBlock title="Appointments List" id="appointments">
             <!-- DoctorAppointmentController.appointments -->
+            <!-- <apex:selectList label="Select a doctor" size="1" value="{!}" onchange="();"  >		 
+                <apex:selectOptions value="{!}"/>
+            </apex:selectList>
+
+            <apex:actionFunction name="SelectAppointments" action="{!}"  rerender="allBlock"/>             
+            <apex:commandButton value="Add New Doctor" action="{!}"/>  -->
+
+            <!-- <apex:outputField label="Working Start Hours " value="{!Doctor__r.Working_Hours_Start__c}"/>
+            <apex:outputField label="Working End Hours " value="{!Doctor__r.Working_Hours_End__c}"/>
+
+            <apex:selectList label="Select a patient" value="{!}" size="1">
+                 <apex:selectOptions value="{!}" />
+            </apex:selectList>  -->
+            <!-- <apex:commandButton value="Add New Patient" action="{!}" />
+
+            <apex:pageBlockSection>
+                <apex:inputField label="Appointment date" value="{!}" required="false" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection>
+                <apex:inputField label="Duration in minutes" value="{!}" required="false" />
+            </apex:pageBlockSection>
+
+            <apex:commandButton action="{!save}" value="Add New Appointment" reRender="allBlock" /> -->
+
+
             <apex:pageBlockTable value="{! appointments }" var="a">
-                <apex:column value="{! a.Doctor__r.Name }"/>
-                <apex:column value="{! a.Patient__r.Name }"/>
-                <apex:column value="{! a.Appointment_Date__c }"/>
-                <apex:column value="{! a.Duration_in_minutes__c }"/>
+                <apex:column value="{! a.Doctor__r.Name }" />
+                <apex:column value="{! a.Patient__r.Name }" />
+                <apex:column value="{! a.Appointment_Date__c }" />
+                <apex:column value="{! a.Duration_in_minutes__c }" />
             </apex:pageBlockTable>
+            <!-- <apex:commandButton reRender="AppointmentTableSection" value="Previous" action="{!setCon.previous}" disabled="{!!setCon.hasPrevious}"
+                title="Previous" />
+            <apex:outputText>{!setCon.pageNumber} / {!CEILING(setCon.resultSize / PageSize)}</apex:outputText>
+            <apex:commandButton reRender="AppointmentTableSection" value="Next" action="{!setCon.next}" disabled="{!!setCon.hasNext}"
+                title="Next" /> -->
         </apex:pageBlock>
     </apex:form>
     <br/>
     <apex:form>
         <apex:pageBlock title="Patients" id="patients">
             <apex:pageBlockTable value="{! patients }" var="p">
-                <apex:column value="{! p.Name }"/>
+                <apex:column value="{! p.Name }" />
             </apex:pageBlockTable>
         </apex:pageBlock>
     </apex:form>
@@ -22,7 +53,7 @@
     <apex:form>
         <apex:pageBlock title="Doctors" id="doctors">
             <apex:pageBlockTable value="{! doctors }" var="d">
-                <apex:column value="{! d.Name }"/>
+                <apex:column value="{! d.Name }" />
             </apex:pageBlockTable>
         </apex:pageBlock>
     </apex:form>
