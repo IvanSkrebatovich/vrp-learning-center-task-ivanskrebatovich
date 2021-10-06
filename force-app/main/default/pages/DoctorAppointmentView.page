@@ -58,23 +58,29 @@
         </apex:pageBlock>
     </apex:form>
 
-    <hr/>
+    <!-- <hr/>
     <div>
         <button onclick="createAppointment()">Create Appointment</button>
-    </div>
+    </div> -->
 
-    <script>
-        function createAppointment() {
-            console.log('CREATE SOME APPOINTMENT');
-            // var isCreated = DoctorAppointmentController.createAppointment();
-            // ..
-            // ..
-            // ..
-            // ..
-            // ..
-            // ..
-            // ..
-        }
-    </script>
+    <!-- <script>
+        // function createAppointment() {
+        //     Visualforce.remoting.Manager.invokeAction("{!RemoteAction.DoctorAppointmentController.jopa}", function (result, event) {
+        //         console.log('RESULT:', result);
+        //         console.log('EVENT:', event);
+        //     }, {escape: true});
+            
+            // function createAppointment() {
+            //     var target = "{$!RemoteAction.DoctorAppointmentController.jopa};
+            //     var options = {escape: true};
+            //     var callback = function(result,event) {
+            //         console.log('RESULT:', result);
+            //         console.log('EVENT:', event);
+            //     }
+            //     Visualforce.remoting.Manager.invokeAction(target, callback, options);
+            // }
+            
+        // }
+    </script> -->
 
 </apex:page>
