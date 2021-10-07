@@ -12,8 +12,8 @@ public class DoctorAppointmentsModel {
         return true;
     }
 
-    public static List<Doctor__c> getDoctors() {
-        List<Doctor__c> doctors = new List<Doctor__c>([
+    public static List<SObject> getDoctors() {
+        List<SObject> doctors = new List<Doctor__c>([
             SELECT Id, Name, Working_Hours_End__c, Working_Hours_Start__c FROM Doctor__c
         ]);
         return doctors;

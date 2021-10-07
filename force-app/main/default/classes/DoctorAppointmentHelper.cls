@@ -1,5 +1,16 @@
 public class DoctorAppointmentHelper {
 
+    public static List<SelectOption> generateSelectOptions(List<SObject> collection) {
+        List<SelectOption> options = new List<SelectOption>();
+        SelectOption blankOption = new SelectOption('', '');
+        options.add(blankOption);
+        for (SObject item : collection) {
+            SelectOption option = new SelectOption(item.Id, item.Id);
+            options.add(option);
+        }
+        return options;
+    }
+
     public static Boolean hasDoctorsAppointments(Appointment__c inputAppointment, Integer startTime, Integer endTime) {
         List<Appointment__c> appointments = DoctorAppointmentsModel.getAppointments();
         for (Appointment__c record : appointments) {

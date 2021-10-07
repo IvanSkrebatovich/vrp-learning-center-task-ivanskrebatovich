@@ -56,11 +56,9 @@
                 <apex:column value="{! a.Appointment_Date__c }" />
                 <apex:column value="{! a.Duration_in_minutes__c }" />
             </apex:pageBlockTable>
+            <apex:commandButton value="Add New Appointment" onclick="createAppointment()" rerender="none"/>
         </apex:pageBlock>
-        <button onclick="createAppointment()">Add New Appointment</button>
     </apex:form>
-
-
 
 
 
@@ -76,6 +74,8 @@
                 console.log("EVENT:", event);
             };
             Visualforce.remoting.Manager.invokeAction(target, callback, options);
+            // DoctorAppointmentController.createAppointment(callback);
+            // return false;
         }
     </script>
 </apex:page>

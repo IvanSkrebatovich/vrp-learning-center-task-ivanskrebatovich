@@ -1,5 +1,4 @@
 public without sharing class DoctorAppointmentController {
-
     // =================================================================
     // SELECT BOXES:
     // RERENDERING:
@@ -9,15 +8,7 @@ public without sharing class DoctorAppointmentController {
     // DOCTORS:
     public List<SelectOption> getDoctors() {
         List<Doctor__c> doctors = DoctorAppointmentsModel.getDoctors();
-        List<SelectOption> options = new List<SelectOption>();
-
-        SelectOption blankOption = new SelectOption('', '');
-        options.add(blankOption);
-
-        for (Doctor__c value : doctors) {
-            SelectOption option = new SelectOption(value.Id, value.Name);
-            options.add(option);
-        }
+        List<SelectOption> options = DoctorAppointmentHelper.generateSelectOptions(doctors);
         return options;
     }
     private String selectedDoctor = '';
@@ -27,24 +18,11 @@ public without sharing class DoctorAppointmentController {
     public void setSelectedDoctor(String s) {
         this.selectedDoctor = s;
     }
-    public Doctor__c getDoctorDetails() {
-        Doctor__c doctor = null;
-        Boolean isSelected = !String.isBlank(this.selectedDoctor);
-        if (isSelected) {
-            return DoctorAppointmentsModel.getDoctorById(this.selectedDoctor);
-        }
-        return doctor;
-    }
+
     // PATIENTS:
     public List<SelectOption> getPatients() {
         List<Patient__c> patients = DoctorAppointmentsModel.getPatients();
-        List<SelectOption> options = new List<SelectOption>();
-        SelectOption blankOption = new SelectOption('', '');
-        options.add(blankOption);
-        for (Patient__c value : patients) {
-            SelectOption option = new SelectOption(value.Id, value.Name);
-            options.add(option);
-        }
+        List<SelectOption> options = DoctorAppointmentHelper.generateSelectOptions(patients);
         return options;
     }
     private String selectedPatient = '';
@@ -55,6 +33,11 @@ public without sharing class DoctorAppointmentController {
         this.selectedPatient = s;
     }
 
+    // =================================================================
+    public Doctor__c getDoctorDetails() {
+        Boolean isSelected = !String.isBlank(this.selectedDoctor);
+        return (isSelected) ? DoctorAppointmentsModel.getDoctorById(this.selectedDoctor) : null;
+    }
 
     // =================================================================
     // APPOINTMENTS:
@@ -66,7 +49,6 @@ public without sharing class DoctorAppointmentController {
     public static Boolean createAppointment() {
         // TODO / TODO / TODO / TODO / TODO / TODO / TODO / TODO / TODO:
         // CREATE APPOINTMENT
-       
         return true;
     }
 }
