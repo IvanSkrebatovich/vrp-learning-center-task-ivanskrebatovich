@@ -10,6 +10,10 @@ public without sharing class DoctorAppointmentController {
     public List<SelectOption> getDoctors() {
         List<Doctor__c> doctors = DoctorAppointmentsModel.getDoctors();
         List<SelectOption> options = new List<SelectOption>();
+
+        SelectOption blankOption = new SelectOption('', '');
+        options.add(blankOption);
+
         for (Doctor__c value : doctors) {
             SelectOption option = new SelectOption(value.Id, value.Name);
             options.add(option);
@@ -24,10 +28,12 @@ public without sharing class DoctorAppointmentController {
         this.selectedDoctor = s;
     }
     public Doctor__c getDoctorDetails() {
-        // TODO / TODO / TODO / TODO / TODO / TODO / TODO / TODO / TODO:
-        // GET DOCTOR BY ID:
-        
-        return null;
+        Doctor__c doctor = null;
+        Boolean isSelected = !String.isBlank(this.selectedDoctor);
+        if (isSelected) {
+            return DoctorAppointmentsModel.getDoctorById(this.selectedDoctor);
+        }
+        return doctor;
     }
     // PATIENTS:
     public List<SelectOption> getPatients() {

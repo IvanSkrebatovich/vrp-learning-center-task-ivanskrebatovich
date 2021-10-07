@@ -1,6 +1,24 @@
 <apex:page controller="DoctorAppointmentController"
+    sidebar="false"
+    showHeader="false"
     applyBodyTag="true"
     applyHtmlTag="true">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        #contentWrapper {
+            min-width: auto !important;
+        }
+        body {
+            margin: 0 !important;
+            padding: 30px;
+            min-height: 100vh;
+            border: solid 5px red;
+            overflow: scroll;
+        }
+    </style>
 
     <apex:outputPanel id="doctorsAndPatients">
         <apex:form>

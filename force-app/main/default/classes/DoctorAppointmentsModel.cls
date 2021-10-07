@@ -19,6 +19,16 @@ public class DoctorAppointmentsModel {
         return doctors;
     }
 
+    public static Doctor__c getDoctorById(Id doctorsId) {
+        List<Doctor__c> doctors = new List<Doctor__c>([
+            SELECT Id, Name, Working_Hours_End__c, Working_Hours_Start__c FROM Doctor__c
+            WHERE Id=:doctorsId
+        ]);
+        return doctors[0];
+    }
+
+
+
     public static List<Patient__c> getPatients() {
         List<Patient__c> patients = new List<Patient__c>([ SELECT Id, Name FROM Patient__c ]);
         return patients;
