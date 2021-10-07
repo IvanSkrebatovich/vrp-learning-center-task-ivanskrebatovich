@@ -39,6 +39,8 @@ public without sharing class DoctorAppointmentController {
     public List<SelectOption> getPatients() {
         List<Patient__c> patients = DoctorAppointmentsModel.getPatients();
         List<SelectOption> options = new List<SelectOption>();
+        SelectOption blankOption = new SelectOption('', '');
+        options.add(blankOption);
         for (Patient__c value : patients) {
             SelectOption option = new SelectOption(value.Id, value.Name);
             options.add(option);
