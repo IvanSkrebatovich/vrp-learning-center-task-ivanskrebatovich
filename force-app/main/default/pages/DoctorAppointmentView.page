@@ -29,6 +29,23 @@
 
 
 
+
+    <apex:form>
+        <apex:pageBlock title="APPOINTMENTS" id="appointments">
+            <apex:pageBlockTable value="{! appointments }" var="a">
+                <apex:column value="{! a.Doctor__r.Name }" />
+                <apex:column value="{! a.Patient__r.Name }" />
+                <apex:column value="{! a.Appointment_Date__c }" />
+                <apex:column value="{! a.Duration_in_minutes__c }" />
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+        <button onclick="createAppointment()">Add New Appointment</button>
+    </apex:form>
+
+
+
+
+
     <script>
         function onSelectDoctor(event) {
             console.log("ON SELECT DOCTOR:", event);
