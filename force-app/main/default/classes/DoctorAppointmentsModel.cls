@@ -9,6 +9,13 @@ public class DoctorAppointmentsModel {
 
     public static Boolean createAppointment() {
         // DML to CREATE APPOINTMENT
+        Appointment__c[] appointment = new List<Appointment__c>();
+            for(Integer i=0;i<3;i++) {
+            Appointment__c a = new Appointment__c(Appointment_Date__c=null);
+                            appointment.add(a);
+}
+            Appointment__c appointmentToUpdate;
+
         return true;
     }
 

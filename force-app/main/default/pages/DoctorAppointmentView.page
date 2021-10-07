@@ -45,8 +45,21 @@
     </apex:outputPanel>
     <br/><br/><br/><br/>
 
-
-
+    <div>
+        <div>
+           Appointment date 
+        </div>
+        <input id="dateInput" type="text" name="theTextInput" />
+    </div>
+    <br/><br/>
+    <div>
+        <div>
+            Duration in minutes 
+         </div>
+        <input id="durationInput" type="text" name="theTextInput" />
+    </div>
+    
+    <br/><br/><br/><br/>
 
     <apex:form>
         <apex:pageBlock title="APPOINTMENTS" id="appointments">
@@ -60,7 +73,12 @@
         </apex:pageBlock>
     </apex:form>
 
-
+    <apex:form>
+        <apex:commandButton value="Previous" onclick="previousPage()" rerender="none"/>
+    </apex:form>
+    <apex:form>
+        <apex:commandButton value="Next" onclick="nextPage()" rerender="none"/>
+    </apex:form>
 
     <script>
         function onSelectDoctor(event) {
