@@ -1,57 +1,46 @@
-<apex:page controller="DoctorAppointmentController">
-    <apex:form>
-        <apex:pageBlock title="Appointments List" id="appointments">
-            <!-- DoctorAppointmentController.appointments -->
-            <!-- <apex:selectList label="Select a doctor" size="1" value="{!doctors}" onchange="">		 
-                <apex:selectOptions value="{!doctors}"/>
-            </apex:selectList> -->
+<apex:page controller="DoctorAppointmentController"
+    applyBodyTag="true"
+    applyHtmlTag="true">
 
-            <!-- <apex:actionFunction name="SelectAppointments" action="selectAppointment"  rerender="allBlock"/>              -->
-            <apex:commandButton value="Add New Doctor" action="AddNewDoctor"/>
+    <apex:outputPanel id="doctorsAndPatients">
+        <apex:form>
+            <h3>DOCTORS</h3>
+            <div>(Selected Doctor: {!selectedDoctor})</div>
+            <apex:selectList value="{!selectedDoctor}" label="Select a Doctor" multiselect="false" size="1" id="select-doctor">
+                <apex:selectOptions value="{!doctors}" />
+                <apex:actionSupport action="{!rerenderSelectBoxes}" event="onchange" reRender="doctorsAndPatients" />
+            </apex:selectList>
+        </apex:form>
+        <div>
+            <div>Working Hours Start: {!doctorDetails.Working_Hours_Start__c}</div>
+            <div>Working Hours End: {!doctorDetails.Working_Hours_End__c}</div>
+        </div>
+        <br/><br/>
+        <apex:form>
+            <h3>PATIENTS</h3>
+            <div>(Selected Patient: {!selectedPatient})</div>
+            <apex:selectList value="{!selectedPatient}" label="Select a Doctor" multiselect="false" size="1" id="select-patient">
+                <apex:selectOptions value="{!patients}" />
+                <apex:actionSupport action="{!rerenderSelectBoxes}" event="onchange" reRender="doctorsAndPatients" />
+            </apex:selectList>
+        </apex:form>
+    </apex:outputPanel>
+    <br/><br/><br/><br/>
 
-            <!-- <apex:outputField label="Working Start Hours " value="Working_Hours_Start"/>
-            <apex:outputField label="Working End Hours " value="Working_Hours_End"/> -->
 
-            <!-- <apex:selectList label="Select a patient" value="0"size="1">
-                 <apex:selectOptions value="0"/>
-            </apex:selectList>   -->
-            <apex:commandButton value="Add New Patient" action="AddNewPatient" />
 
-            <!-- <apex:pageBlockSection>
-                <apex:inputField label="Appointment date" value="{!}" required="false" />
-            </apex:pageBlockSection>
-
-            <apex:pageBlockSection>
-                <apex:inputField label="Duration in minutes" value="{!}" required="false" />
-            </apex:pageBlockSection> -->
-
-            <!-- <apex:commandButton action="{!save}" value="Add New Appointment" reRender="allBlock" /> --> 
-            <div>
-                <button onclick="createAppointment()">Add New Appointment</button>
-            </div>
-            <apex:pageBlockTable value="{! appointments }" var="a">
-                <apex:column value="{! a.Doctor__r.Name }" />
-                <apex:column value="{! a.Patient__r.Name }" />
-                <apex:column value="{! a.Appointment_Date__c }" />
-                <apex:column value="{! a.Duration_in_minutes__c }" />
-            </apex:pageBlockTable>
-            <!-- <apex:commandButton reRender="AppointmentTableSection" value="Previous" action="{!setCon.previous}" disabled="{!!setCon.hasPrevious}"
-                title="Previous" />
-            <apex:outputText>{!setCon.pageNumber} / {!CEILING(setCon.resultSize / PageSize)}</apex:outputText>
-            <apex:commandButton reRender="AppointmentTableSection" value="Next" action="{!setCon.next}" disabled="{!!setCon.hasNext}"
-                title="Next" /> -->
-        </apex:pageBlock>
-    </apex:form>
-    <br/>
     <script>
+        function onSelectDoctor(event) {
+            console.log("ON SELECT DOCTOR:", event);
+        }
         function createAppointment() {
-            var target = "{!$RemoteAction.DoctorAppointmentController.jopa}";
-            var options = { escape: true};
+            var target = "{!$RemoteAction.DoctorAppointmentController.createAppointment}";
+            var options = { escape: true };
             var callback = function (result, event) {
-                console.log('RESULT:', result);
-                console.log('EVENT:', event);
-            }
+                console.log("RESULT:", result);
+                console.log("EVENT:", event);
+            };
             Visualforce.remoting.Manager.invokeAction(target, callback, options);
         }
-    </script> 
+    </script>
 </apex:page>
