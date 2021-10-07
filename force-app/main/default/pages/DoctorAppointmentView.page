@@ -30,7 +30,7 @@
         <apex:form>
             <h3>DOCTORS</h3>
             <div>(Selected Doctor: {!selectedDoctor})</div>
-            <apex:selectList value="{!selectedDoctor}" styleClass="select-doctor" label="Select a Doctor" multiselect="false" size="1" id="select-doctor">
+            <apex:selectList value="{!selectedDoctor}" styleClass="selectDoctor" label="Select a Doctor" multiselect="false" size="1" id="select-doctor">
                 <apex:selectOptions value="{!doctors}" />
                 <apex:actionSupport action="{!rerenderSelectBoxes}" event="onchange" reRender="doctorsAndPatients" />
             </apex:selectList>
@@ -42,7 +42,7 @@
         <apex:form>
             <h3>PATIENTS</h3>
             <div>(Selected Patient: {!selectedPatient})</div>
-            <apex:selectList value="{!selectedPatient}" styleClass="select-patient" label="Select a Doctor" multiselect="false" size="1" id="select-patient">
+            <apex:selectList value="{!selectedPatient}" styleClass="selectPatient" label="Select a Doctor" multiselect="false" size="1" id="select-patient">
                 <apex:selectOptions value="{!patients}" />
                 <apex:actionSupport action="{!rerenderSelectBoxes}" event="onchange" reRender="doctorsAndPatients" />
             </apex:selectList>
@@ -83,16 +83,18 @@
     <script>
         function createAppointment() {
             var target = "{!$RemoteAction.DoctorAppointmentController.createAppointment}";
-            var doctor = document.querySelector('.select-doctor').value;
-            var patient = document.querySelector('.select-patient').value;
+            var doctor = document.querySelector('.selectDoctor').value;
+            var patient = document.querySelector('.selectPatient').value;
             var appointmentTime = document.querySelector('.appointmentTime').value;
             var appointmentDate = document.querySelector('.appointmentDate').value;
             var appointmentDuration = document.querySelector('.appointmentDuration').value;
 
-            // var dateTime = `${appointmentDate} ${appointmentTime}` || null;
-            // var date = (new Date(dateTime)).toISOString();
+            var dateTime = `${appointmentDate} ${appointmentTime}` || null;
+            var ISOString = (new Date(dateTime)).toISOString();
+            
+            // var date = (Datetime)json.deserialize('"ISOString"', datetime.class);
 
-            var params = [doctor, patient, '2021-10-14 11:00:00', appointmentDuration*1];
+            var params = [doctor, patient, dateTime, appointmentDuration*1];
             console.log(params);
 
             var options = { escape: true };
