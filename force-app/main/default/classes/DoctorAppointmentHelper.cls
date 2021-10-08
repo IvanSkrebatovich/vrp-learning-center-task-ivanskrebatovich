@@ -1,11 +1,22 @@
 public class DoctorAppointmentHelper {
 
+    public static Time convertStringToTime(String input) {
+        // '15:35:00' -> ['15', '35', '00', '00']
+        String[] inputSplit = input.split(':');
+        Integer hour = Integer.valueOf(inputSplit[0]);
+        Integer min = Integer.valueOf(inputSplit[1]);
+        Integer sec = Integer.valueOf(inputSplit[2]);
+        Integer ms = Integer.valueOf(inputSplit[3]);
+        Time result = Time.newInstance(hour, min, sec, ms);
+        return result;
+    }
+
     public static List<SelectOption> generateSelectOptions(List<SObject> collection) {
         List<SelectOption> options = new List<SelectOption>();
         SelectOption blankOption = new SelectOption('', '');
         options.add(blankOption);
         for (SObject item : collection) {
-            SelectOption option = new SelectOption(item.Id, (String)item.get('Name'));
+            SelectOption option = new SelectOption((String)item.Id, (String)item.get('Name'));
             options.add(option);
         }
         return options;
@@ -32,7 +43,7 @@ public class DoctorAppointmentHelper {
     }
 
     public static Boolean hasDoctorAvailable(Appointment__c inputAppointment, Integer startTime, Integer endTime) {
-        List<Doctor__c>  doctors = DoctorAppointmentsModel.getDoctors();
+        List<Doctor__c> doctors = DoctorAppointmentsModel.getDoctors();
         for (Doctor__c doctor : doctors) {
             Integer hoursStart = doctor.Working_Hours_Start__c.hour() * 60 + doctor.Working_Hours_Start__c.minute();
             Integer hoursEnd = doctor.Working_Hours_End__c.hour() * 60 + doctor.Working_Hours_End__c.minute();

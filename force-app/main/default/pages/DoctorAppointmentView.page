@@ -12,9 +12,6 @@
         #contentWrapper {
             min-width: auto !important;
         }
-        .newPerson {
-            margin-left: 5px !important;
-        }
         body {
             margin: 0 !important;
             padding: 30px;
@@ -28,13 +25,52 @@
         .paggination + .paggination {
             margin-left: 15px;
         }
+        .createDoctorPatientForm {
+            width: 40%;
+            display: inline-block;
+            border: solid 3px green;
+            vertical-align: top;
+            padding: 10px;
+            margin: 5px;
+        }
     </style>
+
+
+
+    <apex:outputPanel layout="block">
+        <apex:outputPanel id="createDoctor" styleClass="createDoctorPatientForm">
+            <apex:form>
+                <h3>Doctor's Name</h3><br/>
+                <apex:input styleClass="createdDoctorsName" type="text" value="{!createdDoctorsName}"/>
+                <br/><br/>
+                <h3>Working Hours Start</h3><br/>
+                <apex:input styleClass="createdDoctorsStartTime" type="time" value="{!createdDoctorsStartTime}"/>
+                <br/><br/>
+                <h3>Working Hours End</h3><br/>
+                <apex:input styleClass="createdDoctorsEndTime" type="time" value="{!createdDoctorsEndTime}"/>
+                <apex:actionFunction name="rerenderCreateDoctor" rerender="createDoctor" />
+                <br/><br/>
+                <apex:commandButton value="New Doctor" onclick="createDoctor()" rerender="none"/>
+            </apex:form>
+        </apex:outputPanel>
+
+        <apex:outputPanel id="createPatient" styleClass="createDoctorPatientForm">
+            <apex:form>
+                <h3>Patient's Name</h3><br/>
+                <apex:input styleClass="createdPatientsName" type="text" value="{!createdPatientName}"/>
+                <apex:actionFunction name="rerenderCreatePatient" rerender="createPatient" />
+                <br/><br/>
+                <apex:commandButton value="New Patient" onclick="createPatient()" rerender="none"/>
+            </apex:form>
+        </apex:outputPanel>
+    </apex:outputPanel>
 
 
 
     <apex:outputPanel id="doctorsAndPatients">
         <apex:form>
-            <h2>DOCTORS <apex:commandButton styleClass="newPerson" value="New Doctor" onclick="createDoctor()" rerender="none"/></h2>
+            <br/>
+            <h2>DOCTORS</h2>
             <div>(Selected Doctor: {!selectedDoctor})</div>
             <apex:selectList value="{!selectedDoctor}"
                 styleClass="selectDoctor" label="Select a Doctor" multiselect="false" size="1" id="select-doctor">
@@ -44,16 +80,18 @@
             <div>Working Hours Start: {!doctorDetails.Working_Hours_Start__c}</div>
             <div>Working Hours End: {!doctorDetails.Working_Hours_End__c}</div>
             <br/>
-            <h2>PATIENTS <apex:commandButton styleClass="newPerson" value="New Patient" onclick="createPatient()" rerender="none"/></h2>
+            <h2>PATIENTS</h2>
             <div>(Selected Patient: {!selectedPatient})</div>
             <apex:selectList value="{!selectedPatient}" styleClass="selectPatient" label="Select a Doctor" multiselect="false" size="1" id="select-patient">
                 <apex:selectOptions value="{!patients}" />
                 <apex:actionSupport event="onchange" reRender="doctorsAndPatients" />
             </apex:selectList>
-            <apex:actionFunction name="rerenderSelectedOptions" rerender="doctorsAndPatients" />
+            <apex:actionFunction name="rerenderSelectedOptionsForAppointment" rerender="doctorsAndPatients" />
             <br/><br/>
         </apex:form>
     </apex:outputPanel>
+
+
 
     <apex:outputPanel id="dateTimeOptions">
         <apex:form>
@@ -67,9 +105,11 @@
             <h3>Duration in Minutes</h3><br/>
             <apex:input styleClass="appointmentDuration" type="number" value="{!appointmentDuration}"/>
             <br/><br/><br/><br/><br/>
-            <apex:actionFunction name="rerenderSelectedOptions" rerender="dateTimeOptions" />
+            <apex:actionFunction name="rerenderSelectedOptionsForAppointment" rerender="dateTimeOptions" />
         </apex:form>
     </apex:outputPanel>
+
+
 
     <apex:outputPanel id="appointments">
         <apex:form>
@@ -95,7 +135,13 @@
 
 
 
+
+
+
+
     <script>
+        // ======================================================
+        // ACTIONS:
         function createAppointment() {
             var doctor = document.querySelector('.selectDoctor').value;
             var patient = document.querySelector('.selectPatient').value;
@@ -105,30 +151,60 @@
             var target = "{!$RemoteAction.DoctorAppointmentController.createAppointment}";
             var params = [doctor, patient, `${adt} ${atm}:00`, adr];
             console.log('params:', params);
-            var options = { escape: true };
-            Visualforce.remoting.Manager.invokeAction(target, ...params, callback, options);
+            Visualforce.remoting.Manager.invokeAction(target, ...params, callbackAppointment, { escape: true });
         }
-        function callback(result, event) {
+        function createDoctor() {
+            console.log('CREATE NEW DOCTOR');
+            var name = document.querySelector('.createdDoctorsName').value;
+            var start = document.querySelector('.createdDoctorsStartTime').value+':00:00';
+            var end = document.querySelector('.createdDoctorsEndTime').value+':00:00';
+            var target = "{!$RemoteAction.DoctorAppointmentController.createDoctor}";
+            var params = [name, start, end];
+            console.log('params:', params);
+            Visualforce.remoting.Manager.invokeAction(target, ...params, callbackDoctor, { escape: true });
+        }
+        function createPatient() {
+            console.log('CREATE NEW PATIENT');
+        }
+
+        // ======================================================
+        // CALLBACKS:
+        function callbackAppointment(result, event) {
             console.log("RESULT:", result);
-            result ? reset() : alert('YOU ARE NOT ABLE TO CREATE APPOINTMENT');
+            result ? resetAppointment() : alert('YOU ARE NOT ABLE TO CREATE APPOINTMENT RECORD');
         }
-        function reset() {
+        function callbackDoctor(result, event) {
+            console.log("RESULT:", result);
+            result ? resetDoctor() : alert('YOU ARE NOT ABLE TO CREATE RECORD for DOCTOR');
+        }
+
+        // ======================================================
+        // RESET UI:
+        function resetAppointment() {
             document.querySelector('.selectDoctor').value='';
             document.querySelector('.selectPatient').value='';
             document.querySelector('.appointmentDate').value='';
             document.querySelector('.appointmentTime').value='';
             document.querySelector('.appointmentDuration').value='';
-            rerenderSelectedOptions();
+            rerenderSelectedOptionsForAppointment();
             rerenderAppointments();
         }
+        function resetDoctor() {
+            document.querySelector('.createdDoctorsName').value='';
+            document.querySelector('.createdDoctorsStartTime').value='';
+            document.querySelector('.createdDoctorsEndTime').value='';
+            rerenderCreateDoctor();
+        }
+        function resetPatient() {
+            document.querySelector('.createdPatientsName').value='';
+            rerenderCreatePatient();
+        }
+
+        // ======================================================
+        // MISC:
         function pagination(input) {
             console.log('pagination:', input);
         }
-        function createDoctor() {
-            console.log('CREATE NEW DOCTOR');
-        }
-        function createPatient() {
-            console.log('CREATE NEW PATIENT');
-        }
     </script>
+
 </apex:page>

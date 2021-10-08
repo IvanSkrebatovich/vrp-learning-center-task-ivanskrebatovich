@@ -15,6 +15,15 @@ public without sharing class DoctorAppointmentsModel {
         return false;
     }
 
+    public static Boolean createDoctor(String name, Time whStart, Time whEnd) {
+        // ...
+        return true;
+    }
+    public static Boolean createPatient(String name) {
+        // ...
+        return true;
+    }
+
     public static List<SObject> getDoctors() {
         List<SObject> doctors = new List<Doctor__c>([SELECT Id, Name, Working_Hours_End__c, Working_Hours_Start__c FROM Doctor__c]);
         return doctors;
