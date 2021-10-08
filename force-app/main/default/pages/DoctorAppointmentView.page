@@ -39,20 +39,16 @@
             <apex:selectList value="{!selectedDoctor}"
                 styleClass="selectDoctor" label="Select a Doctor" multiselect="false" size="1" id="select-doctor">
                 <apex:selectOptions value="{!doctors}" />
-                <apex:actionSupport action="{!rerenderPartitions}" event="onchange" reRender="doctorsAndPatients" />
+                <apex:actionSupport event="onchange" reRender="doctorsAndPatients" />
             </apex:selectList>
             <div>Working Hours Start: {!doctorDetails.Working_Hours_Start__c}</div>
             <div>Working Hours End: {!doctorDetails.Working_Hours_End__c}</div>
             <br/>
-        </apex:form>
-
-        <apex:form>
             <h2>PATIENTS <apex:commandButton styleClass="newPerson" value="New Patient" onclick="createPatient()" rerender="none"/></h2>
             <div>(Selected Patient: {!selectedPatient})</div>
-            <apex:selectList value="{!selectedPatient}"
-                styleClass="selectPatient" label="Select a Doctor" multiselect="false" size="1" id="select-patient">
+            <apex:selectList value="{!selectedPatient}" styleClass="selectPatient" label="Select a Doctor" multiselect="false" size="1" id="select-patient">
                 <apex:selectOptions value="{!patients}" />
-                <apex:actionSupport action="{!rerenderPartitions}" event="onchange" reRender="doctorsAndPatients" />
+                <apex:actionSupport event="onchange" reRender="doctorsAndPatients" />
             </apex:selectList>
             <apex:actionFunction name="rerenderSelectedOptions" rerender="doctorsAndPatients" />
             <br/><br/>
@@ -90,8 +86,8 @@
                     <apex:column value="{! a.Duration_in_minutes__c }" />
                 </apex:pageBlockTable>
                 <br/><br/>
-                <apex:commandButton styleClass="paggination" value="Previous" onclick="previousPage()" rerender="none"/>
-                <apex:commandButton styleClass="paggination" value="Next" onclick="nextPage()" rerender="none"/>
+                <apex:commandButton styleClass="paggination" value="Previous" onclick="pagination('prev')" rerender="none"/>
+                <apex:commandButton styleClass="paggination" value="Next" onclick="pagination('next')" rerender="none"/>
                 <apex:actionFunction name="rerenderAppointments" rerender="appointments" />
             </apex:pageBlock>
         </apex:form>
@@ -109,18 +105,22 @@
             var target = "{!$RemoteAction.DoctorAppointmentController.createAppointment}";
             var params = [doctor, patient, `${adt} ${atm}:00`, adr];
             var options = { escape: true };
-            Visualforce.remoting.Manager.invokeAction(target, ...params, function (result, event) {
-                console.log("RESULT:", result);
-                document.querySelector('.selectDoctor').value='';
-                document.querySelector('.selectPatient').value='';
-                document.querySelector('.appointmentDate').value='';
-                document.querySelector('.appointmentTime').value='';
-                document.querySelector('.appointmentDuration').value='';
-                rerenderAppointments();
-                rerenderSelectedOptions();
-            }, options);
+            Visualforce.remoting.Manager.invokeAction(target, ...params, callback, options);
         }
-        // ------------------------------------------------------------
+
+        function callback(result, event) {
+            console.log("RESULT:", result);
+            document.querySelector('.selectDoctor').value='';
+            document.querySelector('.selectPatient').value='';
+            document.querySelector('.appointmentDate').value='';
+            document.querySelector('.appointmentTime').value='';
+            document.querySelector('.appointmentDuration').value='';
+            rerenderAppointments();
+            rerenderSelectedOptions();
+        }
+        function pagination(input) {
+            console.log('pagination:', input);
+        }
         function createDoctor() {
             console.log('CREATE NEW DOCTOR');
         }
