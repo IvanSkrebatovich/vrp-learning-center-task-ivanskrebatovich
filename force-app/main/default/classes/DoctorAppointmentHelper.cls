@@ -5,7 +5,7 @@ public class DoctorAppointmentHelper {
         SelectOption blankOption = new SelectOption('', '');
         options.add(blankOption);
         for (SObject item : collection) {
-            SelectOption option = new SelectOption(item.Id, item.Id);
+            SelectOption option = new SelectOption(item.Id, (String)item.get('Name'));
             options.add(option);
         }
         return options;
