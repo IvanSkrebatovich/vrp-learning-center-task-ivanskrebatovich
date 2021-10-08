@@ -54,9 +54,6 @@ public without sharing class DoctorAppointmentController {
     // -------------------------------
     @RemoteAction()
     public static Boolean createDoctor(String name, String whStartStr, String whEndStr) {
-        System.debug('CREATE Doctor__c ' + name);
-        System.debug('CREATE Doctor__c ' + whStartStr);
-        System.debug('CREATE Doctor__c ' + whEndStr);
         if (!String.isBlank(name) && !String.isBlank(whStartStr) && !String.isBlank(whEndStr)) {
             Time whStartObj = DoctorAppointmentHelper.convertStringToTime(whStartStr);
             Time whEndObj = DoctorAppointmentHelper.convertStringToTime(whEndStr);
@@ -93,7 +90,6 @@ public without sharing class DoctorAppointmentController {
     // -------------------------
     @RemoteAction()
     public static Boolean createPatient(String name) {
-        System.debug('CREATE Patient__c ' + name);
         Boolean condition = !String.isBlank(name);
         return condition ? DoctorAppointmentsModel.createPatient(name) : false;
     }
@@ -130,7 +126,7 @@ public without sharing class DoctorAppointmentController {
         this.appointmentTime = val;
     }
     // -------------------------
-    private Integer appointmentDuration = 25;
+    private Integer appointmentDuration;
     public Integer getAppointmentDuration() {
         return this.appointmentDuration;
     }

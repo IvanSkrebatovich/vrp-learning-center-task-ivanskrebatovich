@@ -16,11 +16,24 @@ public without sharing class DoctorAppointmentsModel {
     }
 
     public static Boolean createDoctor(String name, Time whStart, Time whEnd) {
-        // ...
+        List<Doctor__c> doctors = new List<Doctor__c>();
+        Doctor__c a = new Doctor__c(Name=name, Working_Hours_Start__c=whStart, Working_Hours_End__c=whEnd);
+        doctors.add(a);
+        List<Database.SaveResult> result = Database.insert(doctors, false);
+        for (Database.SaveResult item : result) {
+            return item.isSuccess();
+        }
         return true;
     }
+
     public static Boolean createPatient(String name) {
-        // ...
+        List<Patient__c> patients = new List<Patient__c>();
+        Patient__c a = new Patient__c(Name=name);
+        patients.add(a);
+        List<Database.SaveResult> result = Database.insert(patients, false);
+        for (Database.SaveResult item : result) {
+            return item.isSuccess();
+        }
         return true;
     }
 

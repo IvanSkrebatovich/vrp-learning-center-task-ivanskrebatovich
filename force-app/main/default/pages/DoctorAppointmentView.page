@@ -48,9 +48,10 @@
                 <br/><br/>
                 <h3>Working Hours End</h3><br/>
                 <apex:input styleClass="createdDoctorsEndTime" type="time" value="{!createdDoctorsEndTime}"/>
-                <apex:actionFunction name="rerenderCreateDoctor" rerender="createDoctor" />
                 <br/><br/>
                 <apex:commandButton value="New Doctor" onclick="createDoctor()" rerender="none"/>
+                <apex:actionFunction name="rerenderCreateDoctor" rerender="createDoctor" />
+                <apex:actionFunction name="rerenderCreateDoctor" rerender="appointmentsWrapper" />
             </apex:form>
         </apex:outputPanel>
 
@@ -58,79 +59,76 @@
             <apex:form>
                 <h3>Patient's Name</h3><br/>
                 <apex:input styleClass="createdPatientsName" type="text" value="{!createdPatientName}"/>
-                <apex:actionFunction name="rerenderCreatePatient" rerender="createPatient" />
                 <br/><br/>
                 <apex:commandButton value="New Patient" onclick="createPatient()" rerender="none"/>
+                <apex:actionFunction name="rerenderCreatePatient" rerender="createPatient" />
+                <apex:actionFunction name="rerenderCreatePatient" rerender="appointmentsWrapper" />
             </apex:form>
         </apex:outputPanel>
     </apex:outputPanel>
 
 
-
-    <apex:outputPanel id="doctorsAndPatients">
-        <apex:form>
-            <br/>
-            <h2>DOCTORS</h2>
-            <div>(Selected Doctor: {!selectedDoctor})</div>
-            <apex:selectList value="{!selectedDoctor}"
-                styleClass="selectDoctor" label="Select a Doctor" multiselect="false" size="1" id="select-doctor">
-                <apex:selectOptions value="{!doctors}" />
-                <apex:actionSupport event="onchange" reRender="doctorsAndPatients" />
-            </apex:selectList>
-            <div>Working Hours Start: {!doctorDetails.Working_Hours_Start__c}</div>
-            <div>Working Hours End: {!doctorDetails.Working_Hours_End__c}</div>
-            <br/>
-            <h2>PATIENTS</h2>
-            <div>(Selected Patient: {!selectedPatient})</div>
-            <apex:selectList value="{!selectedPatient}" styleClass="selectPatient" label="Select a Doctor" multiselect="false" size="1" id="select-patient">
-                <apex:selectOptions value="{!patients}" />
-                <apex:actionSupport event="onchange" reRender="doctorsAndPatients" />
-            </apex:selectList>
-            <apex:actionFunction name="rerenderSelectedOptionsForAppointment" rerender="doctorsAndPatients" />
-            <br/><br/>
-        </apex:form>
-    </apex:outputPanel>
-
-
-
-    <apex:outputPanel id="dateTimeOptions">
-        <apex:form>
-            <br/><br/>
-            <h3>Appointment Date</h3><br/>
-            <apex:input styleClass="appointmentDate" type="date" value="{!appointmentDate}"/>
-            <br/><br/>
-            <h3>Appointment Time</h3><br/>
-            <apex:input styleClass="appointmentTime" type="time" value="{!appointmentTime}"/>
-            <br/><br/>
-            <h3>Duration in Minutes</h3><br/>
-            <apex:input styleClass="appointmentDuration" type="number" value="{!appointmentDuration}"/>
-            <br/><br/><br/><br/><br/>
-            <apex:actionFunction name="rerenderSelectedOptionsForAppointment" rerender="dateTimeOptions" />
-        </apex:form>
-    </apex:outputPanel>
-
-
-
-    <apex:outputPanel id="appointments">
-        <apex:form>
-            <apex:pageBlock title="APPOINTMENTS">
-                <apex:commandButton value="Add New Appointment" onclick="createAppointment()" rerender="none"/>
+    <apex:outputPanel id="appointmentsWrapper">
+        <apex:outputPanel id="doctorsAndPatients">
+            <apex:form>
+                <br/>
+                <h2>DOCTORS</h2>
+                <div>(Selected Doctor: {!selectedDoctor})</div>
+                <apex:selectList value="{!selectedDoctor}" styleClass="selectDoctor" multiselect="false" size="1" id="select-doctor">
+                    <apex:selectOptions value="{!doctors}" />
+                    <apex:actionSupport event="onchange" reRender="doctorsAndPatients" />
+                </apex:selectList>
+                <div>Working Hours Start: {!doctorDetails.Working_Hours_Start__c}</div>
+                <div>Working Hours End: {!doctorDetails.Working_Hours_End__c}</div>
+                <br/>
+                <h2>PATIENTS</h2>
+                <div>(Selected Patient: {!selectedPatient})</div>
+                <apex:selectList value="{!selectedPatient}" styleClass="selectPatient" multiselect="false" size="1" id="select-patient">
+                    <apex:selectOptions value="{!patients}" />
+                    <apex:actionSupport event="onchange" reRender="doctorsAndPatients" />
+                </apex:selectList>
+                <apex:actionFunction name="rerenderSelectedOptionsForAppointment" rerender="doctorsAndPatients" />
                 <br/><br/>
-                <apex:pageBlockTable value="{! appointments }" var="a">
-                    <apex:column>
-                        <apex:outputLink value="javascript:void(0);" styleClass="appointmentsView">view</apex:outputLink>
-                    </apex:column>
-                    <apex:column value="{! a.Doctor__r.Name }" />
-                    <apex:column value="{! a.Patient__r.Name }" />
-                    <apex:column value="{! a.Appointment_Date__c }" />
-                    <apex:column value="{! a.Duration_in_minutes__c }" />
-                </apex:pageBlockTable>
+            </apex:form>
+        </apex:outputPanel>
+        <!-- ================================================== -->
+        <apex:outputPanel id="dateTimeOptions">
+            <apex:form>
                 <br/><br/>
-                <apex:commandButton styleClass="paggination" value="Previous" onclick="pagination('prev')" rerender="none"/>
-                <apex:commandButton styleClass="paggination" value="Next" onclick="pagination('next')" rerender="none"/>
-                <apex:actionFunction name="rerenderAppointments" rerender="appointments" />
-            </apex:pageBlock>
-        </apex:form>
+                <h3>Appointment Date</h3><br/>
+                <apex:input styleClass="appointmentDate" type="date" value="{!appointmentDate}"/>
+                <br/><br/>
+                <h3>Appointment Time</h3><br/>
+                <apex:input styleClass="appointmentTime" type="time" value="{!appointmentTime}"/>
+                <br/><br/>
+                <h3>Duration in Minutes</h3><br/>
+                <apex:input styleClass="appointmentDuration" type="number" value="{!appointmentDuration}"/>
+                <br/><br/><br/><br/><br/>
+                <apex:actionFunction name="rerenderSelectedOptionsForAppointment" rerender="dateTimeOptions" />
+            </apex:form>
+        </apex:outputPanel>
+        <!-- ================================================== -->
+        <apex:outputPanel id="appointments">
+            <apex:form>
+                <apex:pageBlock title="APPOINTMENTS">
+                    <apex:commandButton value="Add New Appointment" onclick="createAppointment()" rerender="none"/>
+                    <br/><br/>
+                    <apex:pageBlockTable value="{! appointments }" var="a">
+                        <apex:column>
+                            <apex:outputLink value="javascript:void(0);" styleClass="appointmentsView">view</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{! a.Doctor__r.Name }" />
+                        <apex:column value="{! a.Patient__r.Name }" />
+                        <apex:column value="{! a.Appointment_Date__c }" />
+                        <apex:column value="{! a.Duration_in_minutes__c }" />
+                    </apex:pageBlockTable>
+                    <br/><br/>
+                    <apex:commandButton styleClass="paggination" value="Previous" onclick="pagination('prev')" rerender="none"/>
+                    <apex:commandButton styleClass="paggination" value="Next" onclick="pagination('next')" rerender="none"/>
+                    <apex:actionFunction name="rerenderAppointments" rerender="appointments" />
+                </apex:pageBlock>
+            </apex:form>
+        </apex:outputPanel>
     </apex:outputPanel>
 
 
@@ -164,18 +162,27 @@
             Visualforce.remoting.Manager.invokeAction(target, ...params, callbackDoctor, { escape: true });
         }
         function createPatient() {
-            console.log('CREATE NEW PATIENT');
+            console.log('CREATE NEW DOCTOR');
+            var name = document.querySelector('.createdPatientsName').value;
+            var target = "{!$RemoteAction.DoctorAppointmentController.createPatient}";
+            var params = [name];
+            console.log('params:', params);
+            Visualforce.remoting.Manager.invokeAction(target, ...params, callbackPatient, { escape: true });
         }
 
         // ======================================================
         // CALLBACKS:
         function callbackAppointment(result, event) {
-            console.log("RESULT:", result);
+            console.log("APPOINTMENT RESULT:", result);
             result ? resetAppointment() : alert('YOU ARE NOT ABLE TO CREATE APPOINTMENT RECORD');
         }
         function callbackDoctor(result, event) {
-            console.log("RESULT:", result);
+            console.log("DOCTOR RESULT:", result);
             result ? resetDoctor() : alert('YOU ARE NOT ABLE TO CREATE RECORD for DOCTOR');
+        }
+        function callbackPatient(result, event) {
+            console.log("PATIENT RESULT:", result);
+            result ? resetPatient() : alert('YOU ARE NOT ABLE TO CREATE RECORD for PATIENT');
         }
 
         // ======================================================
