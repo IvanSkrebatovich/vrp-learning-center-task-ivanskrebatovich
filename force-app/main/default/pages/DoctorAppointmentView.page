@@ -104,19 +104,22 @@
             var adr = document.querySelector('.appointmentDuration').value*1;
             var target = "{!$RemoteAction.DoctorAppointmentController.createAppointment}";
             var params = [doctor, patient, `${adt} ${atm}:00`, adr];
+            console.log('params:', params);
             var options = { escape: true };
             Visualforce.remoting.Manager.invokeAction(target, ...params, callback, options);
         }
-
         function callback(result, event) {
             console.log("RESULT:", result);
+            result ? reset() : alert('YOU ARE NOT ABLE TO CREATE APPOINTMENT');
+        }
+        function reset() {
             document.querySelector('.selectDoctor').value='';
             document.querySelector('.selectPatient').value='';
             document.querySelector('.appointmentDate').value='';
             document.querySelector('.appointmentTime').value='';
             document.querySelector('.appointmentDuration').value='';
-            rerenderAppointments();
             rerenderSelectedOptions();
+            rerenderAppointments();
         }
         function pagination(input) {
             console.log('pagination:', input);

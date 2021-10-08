@@ -7,26 +7,13 @@ public without sharing class DoctorAppointmentController {
 
     // =================================================================
     // SELECT BOXES:
-    // PATIENTS:
-    public List<SelectOption> getPatients() {
-        List<Patient__c> patients = DoctorAppointmentsModel.getPatients();
-        List<SelectOption> options = DoctorAppointmentHelper.generateSelectOptions(patients);
-        return options;
-    }
-    private String selectedPatient = '';
-    public String getSelectedPatient() {
-        return this.selectedPatient;
-    }
-    public void setSelectedPatient(String val) {
-        this.selectedPatient = val;
-    }
     // DOCTORS:
     public List<SelectOption> getDoctors() {
         List<Doctor__c> doctors = DoctorAppointmentsModel.getDoctors();
         List<SelectOption> options = DoctorAppointmentHelper.generateSelectOptions(doctors);
         return options;
     }
-    private String selectedDoctor = '';
+    private String selectedDoctor = 'a055f000001JpbGAAS';
     public String getSelectedDoctor() {
         return this.selectedDoctor;
     }
@@ -37,6 +24,20 @@ public without sharing class DoctorAppointmentController {
         Boolean isSelected = !String.isBlank(this.selectedDoctor);
         return (isSelected) ? DoctorAppointmentsModel.getDoctorById(this.selectedDoctor) : null;
     }
+    // PATIENTS:
+    public List<SelectOption> getPatients() {
+        List<Patient__c> patients = DoctorAppointmentsModel.getPatients();
+        List<SelectOption> options = DoctorAppointmentHelper.generateSelectOptions(patients);
+        return options;
+    }
+    private String selectedPatient = 'a095f000000Ru0aAAC';
+    public String getSelectedPatient() {
+        return this.selectedPatient;
+    }
+    public void setSelectedPatient(String val) {
+        this.selectedPatient = val;
+    }
+
 
     // =================================================================
     // DATE/TIME:
@@ -64,7 +65,7 @@ public without sharing class DoctorAppointmentController {
         this.appointmentTime = val;
     }
     // -------------------------
-    private Integer appointmentDuration;
+    private Integer appointmentDuration = 25;
     public Integer getAppointmentDuration() {
         return this.appointmentDuration;
     }

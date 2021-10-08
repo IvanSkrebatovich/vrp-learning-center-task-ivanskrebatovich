@@ -6,12 +6,13 @@ public without sharing class DoctorAppointmentsModel {
 
     public static Boolean createAppointment(String d, String p, Datetime dt, Integer dr) {
         List<Appointment__c> appointments = new List<Appointment__c>();
-        Appointment__c a = new Appointment__c(
-            Doctor__c=d, Patient__c=p, Appointment_Date__c=dt, Duration_in_minutes__c=dr
-        );
+        Appointment__c a = new Appointment__c(Doctor__c=d, Patient__c=p, Appointment_Date__c=dt, Duration_in_minutes__c=dr);
         appointments.add(a);
         List<Database.SaveResult> result = Database.insert(appointments, false);
-        return !result.isEmpty();
+        for (Database.SaveResult item : result) {
+            return item.isSuccess();
+        }
+        return false;
     }
 
     public static List<SObject> getDoctors() {
