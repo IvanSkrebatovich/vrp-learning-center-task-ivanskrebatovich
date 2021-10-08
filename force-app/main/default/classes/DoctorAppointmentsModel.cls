@@ -10,7 +10,7 @@ public without sharing class DoctorAppointmentsModel {
             Doctor__c=d, Patient__c=p, Appointment_Date__c=dt, Duration_in_minutes__c=dr
         );
         appointments.add(a);
-        List<Database.upsertResult> result = Database.upsert(appointments, false);
+        List<Database.SaveResult> result = Database.insert(appointments, false);
         return !result.isEmpty();
     }
 
