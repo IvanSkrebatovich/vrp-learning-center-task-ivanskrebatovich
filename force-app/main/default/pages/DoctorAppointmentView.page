@@ -28,9 +28,10 @@
 
     <apex:outputPanel id="doctorsAndPatients">
         <apex:form>
-            <h3>DOCTORS</h3>
+            <h2>DOCTORS <apex:commandButton value="New Doctor" onclick="createDoctor()" rerender="none"/></h2>
             <div>(Selected Doctor: {!selectedDoctor})</div>
-            <apex:selectList value="{!selectedDoctor}" styleClass="selectDoctor" label="Select a Doctor" multiselect="false" size="1" id="select-doctor">
+            <apex:selectList value="{!selectedDoctor}"
+                styleClass="selectDoctor" label="Select a Doctor" multiselect="false" size="1" id="select-doctor">
                 <apex:selectOptions value="{!doctors}" />
                 <apex:actionSupport action="{!rerenderSelectBoxes}" event="onchange" reRender="doctorsAndPatients" />
             </apex:selectList>
@@ -40,9 +41,10 @@
         </apex:form>
 
         <apex:form>
-            <h3>PATIENTS</h3>
+            <h2>PATIENTS <apex:commandButton value="New Patient" onclick="createPatient()" rerender="none"/></h2>
             <div>(Selected Patient: {!selectedPatient})</div>
-            <apex:selectList value="{!selectedPatient}" styleClass="selectPatient" label="Select a Doctor" multiselect="false" size="1" id="select-patient">
+            <apex:selectList value="{!selectedPatient}"
+                styleClass="selectPatient" label="Select a Doctor" multiselect="false" size="1" id="select-patient">
                 <apex:selectOptions value="{!patients}" />
                 <apex:actionSupport action="{!rerenderSelectBoxes}" event="onchange" reRender="doctorsAndPatients" />
             </apex:selectList>
@@ -51,6 +53,7 @@
     </apex:outputPanel>
 
     <apex:form>
+        <br/><br/>
         <h3>Appointment Date: ({!appointmentDate})</h3><br/>
         <apex:input styleClass="appointmentDate" type="date" value="{!appointmentDate}"/>
         <br/><br/>
@@ -67,6 +70,9 @@
             <apex:commandButton value="Add New Appointment" onclick="createAppointment()" rerender="none"/>
             <br/><br/>
             <apex:pageBlockTable value="{! appointments }" var="a">
+                <apex:column>
+                    <apex:outputLink value="javascript:void(0);" styleClass="appointmentsView">view</apex:outputLink>
+                </apex:column>
                 <apex:column value="{! a.Doctor__r.Name }" />
                 <apex:column value="{! a.Patient__r.Name }" />
                 <apex:column value="{! a.Appointment_Date__c }" />
@@ -82,24 +88,25 @@
 
     <script>
         function createAppointment() {
-            var target = "{!$RemoteAction.DoctorAppointmentController.createAppointment}";
             var doctor = document.querySelector('.selectDoctor').value;
             var patient = document.querySelector('.selectPatient').value;
-            var appointmentTime = document.querySelector('.appointmentTime').value;
-            var appointmentDate = document.querySelector('.appointmentDate').value;
-            var appointmentDuration = document.querySelector('.appointmentDuration').value;
-
-            var dateTime = `${appointmentDate} ${appointmentTime}` || null;
-            var ISOString = (new Date(dateTime)).toISOString();
-            
-            // var date = (Datetime)json.deserialize('"ISOString"', datetime.class);
-
-            var params = [doctor, patient, dateTime, appointmentDuration*1];
-            console.log(params);
-
+            var adt = document.querySelector('.appointmentDate').value;
+            var atm = document.querySelector('.appointmentTime').value;
+            var adr = document.querySelector('.appointmentDuration').value*1;
+            var target = "{!$RemoteAction.DoctorAppointmentController.createAppointment}";
+            var params = [doctor, patient, `${adt} ${atm}:00`, adr];
             var options = { escape: true };
-            var callback = function (result, event) { console.log("RESULT:", result); };
+            function callback(result, event) {
+                console.log("RESULT:", result);
+            };
             Visualforce.remoting.Manager.invokeAction(target, ...params, callback, options);
+        }
+        // ------------------------------------------------------------
+        function createDoctor() {
+            console.log('CREATE NEW DOCTOR');
+        }
+        function createPatient() {
+            console.log('CREATE NEW PATIENT');
         }
     </script>
 </apex:page>
