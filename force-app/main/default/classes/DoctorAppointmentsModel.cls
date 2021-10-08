@@ -22,7 +22,7 @@ public without sharing class DoctorAppointmentsModel {
 
     public static Doctor__c getDoctorById(Id doctorsId) {
         List<Doctor__c> doctors = new List<Doctor__c>([SELECT Id, Name, Working_Hours_End__c, Working_Hours_Start__c FROM Doctor__c WHERE Id = :doctorsId]);
-        return doctors[0];
+        return doctors.isEmpty() ? null : doctors[0];
     }
 
     public static List<Patient__c> getPatients() {
