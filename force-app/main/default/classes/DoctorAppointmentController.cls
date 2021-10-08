@@ -1,10 +1,12 @@
 public without sharing class DoctorAppointmentController {
-    // =================================================================
-    // SELECT BOXES:
     // RERENDERING:
-    public PageReference rerenderSelectBoxes() {
+    public PageReference rerenderPartitions() {
         return null;
     }
+
+
+    // =================================================================
+    // SELECT BOXES:
     // PATIENTS:
     public List<SelectOption> getPatients() {
         List<Patient__c> patients = DoctorAppointmentsModel.getPatients();
@@ -37,7 +39,7 @@ public without sharing class DoctorAppointmentController {
     }
 
     // =================================================================
-    // APPINTMENT DATE/TIME:
+    // DATE/TIME:
     private Datetime appointmentDateTime;
     public Datetime getAppointmentDateTime() {
         return this.appointmentDateTime;
